@@ -63,7 +63,7 @@ async def main():
         }
 
         df = pd.DataFrame([new_measurement])
-        df.to_csv("result_measurement.csv", index=False)
+        df.to_csv("new_measure.csv", index=False)
 
 if __name__ == "__main__":
     asyncio.run(main())
