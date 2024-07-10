@@ -11,18 +11,20 @@ from time import sleep
 # Function to communicate with BLE device
 def ble_new_measure():
     subprocess.run([sys.executable, "ble_new_measure.py"])
+    subprocess.run([sys.executable, "bp_new_predict.py"])
     df_result = pd.read_csv("new_measure.csv")
     return df_result
 
 def ble_request_measures():
     subprocess.run([sys.executable, "ble_request_measures.py"])
+    subprocess.run([sys.executable, "bp_request_predicts.py"])
     df_requested_measures = pd.read_csv("requested_measures.csv")
     df_requested_measures['Name'] = df_requested_measures['Name'].astype(str)
     return df_requested_measures
 
 # Set page configuration
 st.set_page_config(
-    page_title="Medical Clinic App",
+    page_title="Central de Medições",
     page_icon="🩺",
     layout="wide",  # Set layout to wide
 )
@@ -45,9 +47,9 @@ def write_to_csv(file_path, measurement):
     data.to_csv(file_path, index=False)
 
 # Define blood pressure categories and color scheme
-BP_CATEGORIES = {'Baixa': {'min_systolic': 0, 'max_systolic': 90, 'min_diastolic': 0, 'max_diastolic': 60},
-                  'Normal': {'min_systolic': 90, 'max_systolic': 120, 'min_diastolic': 60, 'max_diastolic': 80},
-                  'Alta': {'min_systolic': 120, 'max_systolic': float('inf'), 'min_diastolic': 80, 'max_diastolic': float('inf')}}
+BP_CATEGORIES = {'Baixa': {'min_systolic': 0, 'max_systolic': 100, 'min_diastolic': 0, 'max_diastolic': 90},
+                  'Normal': {'min_systolic': 90, 'max_systolic': 120, 'min_diastolic': 70, 'max_diastolic': 80},
+                  'Alta': {'min_systolic': 130, 'max_systolic': float('inf'), 'min_diastolic': 90, 'max_diastolic': float('inf')}}
 COLOR_SCHEME = {'Baixa': '#CAF4FF', 'Normal': '#5AB2FF', 'Alta': '#FF8080'}
 
 # Function to generate a new measurement
@@ -315,7 +317,6 @@ def measurement_screen(data):
 
         with col3:
             st.empty()
-
 
     st.empty()
     st.subheader("Medições Pendentes:")
